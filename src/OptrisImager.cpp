@@ -3,14 +3,14 @@
 namespace optris_drivers
 {
 
-OptrisImager::OptrisImager(evo::IRDeviceUVC* dev, evo::IRDeviceParams params)
+OptrisImager::OptrisImager(evo::IRDevice* dev, evo::IRDeviceParams params)
 {
   evo::IRLogger::setVerbosity(evo::IRLOG_DEBUG, evo::IRLOG_OFF);
 
   _imager.init(&params, dev->getFrequency(), dev->getWidth(), dev->getHeight(), dev->controlledViaHID());
   _imager.setClient(this);
 
-  _bufferRaw = new unsigned char[_imager.getRawBufferSize()];
+  _bufferRaw = new unsigned char[dev->getRawBufferSize()];
 
   ros::NodeHandle n;
   image_transport::ImageTransport it(n);
@@ -87,11 +87,11 @@ void OptrisImager::onThermalFrame(unsigned short* image, unsigned int w, unsigne
 {
   memcpy(&_thermal_image.data[0], image, w * h * sizeof(*image));
 
-  _thermal_image.header.seq = ++_img_cnt;
+  _thermal_image.header.seq   = ++_img_cnt;
   _thermal_image.header.stamp = ros::Time::now();
   _thermal_pub.publish(_thermal_image);
 
-  _device_timer.header.seq = _thermal_image.header.seq;
+  _device_timer.header.seq   = _thermal_image.header.seq;
   _device_timer.header.stamp = _thermal_image.header.stamp;
   _device_timer.time_ref.fromNSec(meta.timestamp);
 

@@ -39,6 +39,9 @@
 #include <sys/stat.h>
 #include "OptrisImager.h"
 
+
+
+
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "optris_imager_node");
@@ -62,14 +65,16 @@ int main(int argc, char **argv)
 
   // Read parameters from xml file
   evo::IRDeviceParams params;
-  if(!evo::IRDeviceParamsReader::readXML(xmlConfig.c_str(), params))
-    return -1;
+  if(!evo::IRDeviceParamsReader::readXML(xmlConfig.c_str(), params)) return -1;
 
   // Find valid device
-  evo::IRDeviceUVC* dev = evo::IRDeviceUVC::createInstance(NULL, params.serial, params.videoFormatIndex);
-  if(!dev)
+//  evo::IRDevice* dev = evo::IRDevice::createInstance(NULL, params.serial, params.videoFormatIndex);
+  evo::IRDevice* dev = evo::IRDevice::IRCreateDevice(params, NULL);
+
+
+  if(!dev->isOpen())
   {
-    std::cout << "Error: UVC device with serial " << params.serial << " could not be found" << std::endl;
+    std::cout << "Error: Device with serial " << params.serial << " could not be found" << std::endl;
     return -1;
   }
 

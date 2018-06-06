@@ -1,16 +1,19 @@
 #ifndef _OPTRISIMAGER_H_
 #define _OPTRISIMAGER_H_
 
-#include "libirimager/IRDeviceUVC.h"
+#include "libirimager/IRDevice.h"
 #include "libirimager/IRImager.h"
 #include "libirimager/IRImagerClient.h"
 #include "libirimager/IRLogger.h"
 
-#include "ros/ros.h"
+// ros includes
+#include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/TimeReference.h>
-#include "std_msgs/Float32.h"
-#include "std_srvs/Empty.h"
+#include <std_msgs/Float32.h>
+#include <std_srvs/Empty.h>
+
+
 #include "optris_drivers/AutoFlag.h"
 #include "optris_drivers/TemperatureRange.h"
 #include "optris_drivers/Temperature.h"
@@ -33,7 +36,7 @@ public:
    * @param[in] dev UVC device instance
    * @param[in] params device parameters
    */
-  OptrisImager(evo::IRDeviceUVC* dev, evo::IRDeviceParams params);
+  OptrisImager(evo::IRDevice* dev, evo::IRDeviceParams params);
 
   /**
    * Destructor
@@ -110,7 +113,7 @@ private:
 
   evo::IRImager _imager;
 
-  evo::IRDeviceUVC* _dev;
+  evo::IRDevice* _dev;
 
   unsigned int _img_cnt;
 

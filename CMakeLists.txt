@@ -1,10 +1,16 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(optris_drivers)
 
+#add_definitions(-D_GLIBCXX_USE_CXX11_ABI=1)
+#SET(CMAKE_CXX_FLAGS "-D_GLIBCXX_USE_CXX11_ABI=0")
+
+
 if(EXISTS "/usr/include/libirimager/IRImager.h")
 else()
    message( FATAL_ERROR "libirimager not found. Install binary driver before compiling these ROS nodes." )
 endif()
+
+
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -19,6 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
   dynamic_reconfigure
   camera_info_manager
 )
+
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS thread)
@@ -76,7 +83,7 @@ catkin_package(
   message_runtime
   camera_info_manager
  DEPENDS
-  libudev-dev
+#  libudev-dev
   Boost
 )
 
@@ -105,6 +112,7 @@ target_link_libraries(optris_imager_node
   irimager
   irimageprocessing
   ircore
+  usb-1.0
   udev
   pthread
 )
@@ -115,7 +123,10 @@ target_link_libraries(optris_colorconvert_node
   irimager
   irimageprocessing
   ircore
+  irdirectsdk
   udev
+  usb-1.0
+  
 )
 
 target_link_libraries(optris_binary_image_node
@@ -124,6 +135,7 @@ target_link_libraries(optris_binary_image_node
   irimager
   irimageprocessing
   ircore
+  irdirectsdk
   udev
 )
 
